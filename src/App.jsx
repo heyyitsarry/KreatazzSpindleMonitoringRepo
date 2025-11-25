@@ -4,7 +4,8 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Machines from "./pages/Machines";
 import Alerts from "./pages/Alerts";
-import Predictions from "./pages/Predictions";   // ⬅️ Added Predictions page
+import Predictions from "./pages/Predictions";
+import DataPage from "./pages/Data";    // ⬅️ Added Data page
 
 export default function App() {
   return (
@@ -26,6 +27,9 @@ export default function App() {
 
             {/* Predictions Page */}
             <Route path="/predictions" element={<Predictions />} />
+
+            {/* Data Page */}
+            <Route path="/data" element={<DataPage />} />
 
             {/* Fallback */}
             <Route
