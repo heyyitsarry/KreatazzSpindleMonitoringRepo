@@ -1,0 +1,224 @@
+.sensor-map-container {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.sensor-map-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.sensor-map-title h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.live-indicator {
+    color: var(--color-success);
+    font-weight: 600;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.sensor-map-diagram {
+    background: white;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+}
+
+.sensor-svg {
+    width: 100%;
+    height: auto;
+}
+
+.sensor-indicator {
+    stroke: #333;
+    stroke-width: 2;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    transition: all 0.3s ease;
+}
+
+.sensor-indicator:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    cursor: pointer;
+}
+
+.sensor-indicator.normal {
+    fill: var(--color-success);
+}
+
+.sensor-indicator.warning {
+    fill: var(--color-warning);
+}
+
+.sensor-indicator.critical {
+    fill: var(--color-danger);
+}
+
+.sensor-readings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.sensor-card {
+    background: white;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-base);
+    border: 1px solid var(--color-border);
+}
+
+.sensor-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.sensor-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.sensor-icon {
+    font-size: 1.5rem;
+}
+
+.sensor-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sensor-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sm);
+    font-family: 'Courier New', monospace;
+}
+
+.sensor-status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sensor-status-badge.normal {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--color-success);
+}
+
+.sensor-status-badge.warning {
+    background: rgba(234, 179, 8, 0.1);
+    color: var(--color-warning);
+}
+
+.sensor-status-badge.critical {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--color-danger);
+}
+
+.sensor-legend {
+    background: white;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border);
+}
+
+.legend-title {
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+}
+
+.legend-items {
+    display: flex;
+    gap: var(--spacing-xl);
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.legend-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #333;
+}
+
+.legend-dot.normal {
+    background: var(--color-success);
+}
+
+.legend-dot.warning {
+    background: var(--color-warning);
+}
+
+.legend-dot.critical {
+    background: var(--color-danger);
+}
+
+@media (max-width: 768px) {
+    .sensor-map-container {
+        padding: var(--spacing-md);
+    }
+
+    .sensor-map-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .sensor-readings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sensor-value {
+        font-size: 1.5rem;
+    }
+
+    .legend-items {
+        gap: var(--spacing-md);
+    }
+}

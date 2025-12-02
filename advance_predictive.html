@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Prediction Page</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* --- Global Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            padding: 40px;
+        }
+
+        /* --- General Card --- */
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e9ecef;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f1f3f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header h3 {
+            margin: 0;
+            font-size: 20px;
+            color: #212529;
+        }
+        
+        .card-body {
+            padding: 24px;
+        }
+        
+        /* --- Header & Tabs (Shared) --- */
+        .main-header {
+            margin-bottom: 24px;
+        }
+
+        .main-header h2 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .main-header p {
+            margin: 4px 0 0;
+            font-size: 16px;
+            color: #6c757d;
+        }
+
+        .tabs {
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 24px;
+        }
+
+        .tab-link {
+            background: none;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -1px; 
+        }
+
+        .tab-link.active {
+            color: #0d6efd;
+            border-bottom-color: #0d6efd;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        /* ========================================
+         STYLES FOR SCREEN 1: ANALYSIS SETUP
+        ========================================
+        */
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .form-select, .form-input {
+            padding: 10px 14px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .form-select { min-width: 250px; }
+        .form-input { width: 100px; }
+
+        #run-analysis-btn {
+            margin-left: auto;
+            align-self: flex-end;
+            height: 46px; /* Match input height */
+        }
+
+        .banner-card {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .banner-card-text {
+            font-weight: 600;
+        }
+        
+        .banner-card-text i {
+            margin-right: 10px;
+            color: #0d6efd;
+        }
+        
+        .banner-card-link {
+            font-weight: 600;
+            color: #0d6efd;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 2fr;
+            gap: 30px;
+        }
+
+        .status-tag {
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .status-tag.high-risk {
+            background-color: #ffebe6;
+            color: #d9534f;
+        }
+
+        .inner-tabs {
+            margin-bottom: 24px;
+        }
+        
+        .inner-tab-link {
+            background: none;
+            border: none;
+            padding: 8px 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+        
+        .inner-tab-link.active {
+            background-color: #f1f3f5;
+            color: #212529;
+        }
+
+        .prediction-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        
+        .prediction-title h4 {
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        .icon-alert {
+            color: #ffc107;
+            font-size: 18px;
+        }
+        
+        .prediction-probability {
+            font-size: 32px;
+            font-weight: 700;
+            color: #d9534f;
+            margin: 0 0 4px 0;
+        }
+        
+        .prediction-probability + span {
+            font-size: 14px;
+            color: #6c757d;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 24px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            border-top: 1px solid #f1f3f5;
+            padding-top: 24px;
+        }
+        
+        .stat-item span {
+            display: block;
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 6px;
+        }
+        
+        .stat-item p {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .rca-header {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 2fr;
+            gap: 16px;
+            padding: 0 16px 12px 16px;
+            border-bottom: 1px solid #f1f3f5;
+        }
+        
+        .rca-header span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+        }
+
+        .rca-item {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 2fr;
+            gap: 16px;
+            padding: 16px;
+            align-items: center;
+        }
+        
+        .rca-item p { margin: 0; font-weight: 600; }
+        .rca-item .score { font-weight: 600; }
+        .rca-item .description {
+            font-size: 14px;
+            color: #495057;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .trend-tag {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+        }
+        
+        .trend-tag.increasing {
+            background-color: #fff0e6;
+            color: #fd7e14;
+        }
+
+        /* ========================================
+         STYLES FOR SCREEN 2: ANALYSIS RESULTS
+        ========================================
+        */
+        
+        /* --- This style will hide the results screen by default --- */
+        #analysis-results-content {
+            display: none;
+        }
+        
+        .analysis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 16px 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .analysis-header h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+        
+        .analysis-header span {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0d6efd;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 24px;
+        }
+
+        .grid-col-left, .grid-col-right {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .health-index-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .health-index-header h4 {
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        .health-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: #28a745;
+        }
+        
+        .health-score small {
+            font-size: 18px;
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        .progress-bar-container {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 78%;
+            background-color: #28a745;
+            border-radius: 5px;
+        }
+
+        .recommendations-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .recommendations-list li {
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            color: #495057;
+            margin-bottom: 12px;
+        }
+        
+        .recommendations-list i {
+            color: #28a745;
+            margin-right: 12px;
+        }
+
+        .historical-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .historical-table th, .historical-table td {
+            padding: 14px 10px;
+            text-align: left;
+            border-bottom: 1px solid #f1f3f5;
+            font-size: 14px;
+        }
+        
+        .historical-table th {
+            color: #6c757d;
+            font-weight: 600;
+        }
+        
+        .historical-table td {
+            font-weight: 500;
+        }
+        
+        .historical-table tr.warning-row td {
+            background-color: #fff8e6;
+            color: #ffc107;
+        }
+        
+        .historical-table tr.warning-row i {
+            margin-right: 8px;
+        }
+
+        .failure-probability-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .failure-probability-item span {
+            font-weight: 600;
+            color: #495057;
+            flex-basis: 30%;
+        }
+        
+        .failure-probability-item .days {
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        .bar-chart-container {
+            flex-grow: 1;
+            margin: 0 16px;
+        }
+        
+        .bar-chart-bar {
+            height: 12px;
+            border-radius: 6px;
+            background-image: linear-gradient(to right, #ffc107, #fd7e14);
+        }
+
+        .failure-probability-list {
+            margin-top: 24px;
+        }
+        
+        .probability-bar-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .probability-bar-item span {
+            font-size: 14px;
+            font-weight: 500;
+            color: #495057;
+            width: 150px;
+        }
+        
+        .probability-bar-container {
+            flex-grow: 1;
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin-right: 12px;
+        }
+        
+        .probability-bar {
+            height: 100%;
+            background-color: #0d6efd;
+            border-radius: 4px;
+        }
+        
+        .probability-bar.high { background-color: #d9534f; }
+        .probability-bar.medium { background-color: #ffc107; }
+
+        .probability-bar-item .percentage {
+            font-size: 14px;
+            font-weight: 600;
+            width: 40px;
+        }
+
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .small-card-content span {
+            display: block;
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+        .small-card-content p {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .small-card-content p small {
+            font-size: 16px;
+            font-weight: 500;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="main-content">
+        
+        <header class="main-header">
+            <h2>Predictive Maintenance</h2>
+            <p>ML-based failure prediction and root cause analysis for your machines.</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-link active">Prediction</button>
+            <button class="tab-link">Analysis</button>
+            <button class="tab-link">Advanced ML</button>
+        </div>
+
+        <div id="analysis-setup-content">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="select-machine">Select Machine</label>
+                    <select id="select-machine" class="form-select">
+                        <option>CNC Mill #1</option>
+                        <option>CNC Lathe #2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="forecast-window">Forecast Window (Days)</label>
+                    <input id="forecast-window" class="form-input" type="number" value="30">
+                </div>
+                <button class="btn-primary" id="run-analysis-btn">Run Analysis</button>
+            </div>
+
+            <div class="banner-card card">
+                <span class="banner-card-text">
+                    <i class="fas fa-info-circle"></i>
+                    Phase 3 Ready for Deployment
+                </span>
+                <a class="banner-card-link">Activate Phase 3</a>
+            </div>
+
+            <div class="content-grid">
+                
+                <div class="card" id="failure-analysis">
+                    <div class="card-header">
+                        <h3>Failure Prediction Analysis</h3>
+                        <span class="status-tag high-risk">High Risk Detected</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="inner-tabs">
+                            <button class="inner-tab-link active">Predictions</button>
+                            <button class="inner-tab-link">SHAP Analysis</button>
+                        </div>
+                        
+                        <div class="prediction-title">
+                            <h4>Main Spindle Bearing</h4>
+                            <i class="fas fa-exclamation-triangle icon-alert"></i>
+                        </div>
+                        
+                        <p class="prediction-probability">83%</p>
+                        <span>Failure probability</span>
+
+                        <div class="stats-grid">
+                            <div class="stat-item"><p>72-96 hours</p><span>Estimated time to failure</span></div>
+                            <div class="stat-item"><p>89%</p><span>Confidence score</span></div>
+                            <div class="stat-item"><p>High</p><span>Impact severity</span></div>
+                            <div class="stat-item"><p>Yes</p><span>Historical pattern</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="root-cause-analysis">
+                    <div class="card-header">
+                        <h3>Root Cause Analysis: Main Spindle Bearing</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="rca-header">
+                            <span>Contributing Factor</span>
+                            <span>Score</span>
+                            <span>Trend</span>
+                            <span>Description</span>
+                        </div>
+                        <div class="rca-item">
+                            <p>Excessive Vibration at 120Hz</p>
+                            <span class="score">86%</span>
+                            <span class="trend-tag increasing">Increasing</span>
+                            <span class="description">
+                                Vibration amplitude at 120Hz has increased by 43% in the past 72 hours.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="analysis-results-content">
+            
+            <div class="analysis-header">
+                <h3>Analysis Results: CNC Mill #1</h3>
+                <span>30 Day Forecast</span>
+            </div>
+
+            <div class="results-grid">
+
+                <div class="grid-col-left">
+                    
+                    <div class="card" id="machine-health">
+                        <div class="card-body">
+                            <div class="health-index-header">
+                                <div><h4>Machine Health Index</h4></div>
+                                <span class="health-score">78 <small>/ 100</small></span>
+                            </div>
+                            <div class="progress-bar-container"><div class="progress-bar"></div></div>
+                            <h4>Recommended Actions:</h4>
+                            <ul class="recommendations-list">
+                                <li><i class="fas fa-check-circle"></i> Schedule inspection of spindle bearings...</li>
+                                <li><i class="fas fa-check-circle"></i> Monitor vibration patterns...</li>
+                                <li><i class="fas fa-check-circle"></i> Consider reducing max operational speed...</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card" id="historical-context">
+                        <div class="card-header"><h3>Historical Context</h3></div>
+                        <div class="card-body" style="padding: 0 0 12px 0;">
+                            <table class="historical-table">
+                                <thead><tr><th>Date</th><th>Pattern</th><th>Outcome</th></tr></thead>
+                                <tbody>
+                                    <tr>
+                                        <td>14/3/2025</td>
+                                        <td>Similar vibration pattern detected</td>
+                                        <td>Bearing replacement required...</td>
+                                    </tr>
+                                    <tr>
+                                        <td>22/9/2024</td>
+                                        <td>Related temperature anomaly...</td>
+                                        <td>Preventive maintenance...</td>
+                                    </tr>
+                                    <tr class="warning-row">
+                                        <td colspan="3"><i class="fas fa-exclamation-triangle"></i> Historical patterns indicate potential failure...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-col-right">
+
+                    <div class="card" id="failure-probability">
+                        <div class="card-header"><h3>Failure Probability</h3></div>
+                        <div class="card-body">
+                            </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="bottom-grid">
+                
+                <div class="card" id="maintenance-planning">
+                    <div class="card-header"><h3>Maintenance Planning</h3></div>
+                    <div class="card-body small-card-content">
+                        <span>Est. Cost</span><p>$2800</p>
+                        <span style="margin-top: 16px;">Downtime</span><p>6-8 hours</p>
+                    </div>
+                </div>
+
+                <div class="card" id="production-loss">
+                    <div class="card-header"><h3>Production Loss</h3></div>
+                    <div class="card-body small-card-content">
+                        <span>Est. Units</span><p>~240 units</p>
+                    </div>
+                </div>
+                
+                <div class="card" id="scheduling-recommendation">
+                    <div class="card-header"><h3>Scheduling</h3></div>
+                    <div class="card-body small-card-content">
+                        <p style="font-size: 16px; line-height: 1.6;">
+                            Schedule maintenance during weekend shift
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Wait for the entire page to load before running the script
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // Get the button that triggers the action
+            const runButton = document.getElementById("run-analysis-btn");
+            
+            // Get the two content sections
+            const setupContent = document.getElementById("analysis-setup-content");
+            const resultsContent = document.getElementById("analysis-results-content");
+            
+            // Add a "click" event listener to the button
+            runButton.addEventListener("click", function() {
+                
+                // Hide the first screen (the setup screen)
+                setupContent.style.display = "none";
+                
+                // Show the second screen (the results screen)
+                resultsContent.style.display = "block";
+            });
+        });
+    </script>
+
+</body>
+</html>

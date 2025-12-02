@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import SpindleView from "../components/SpindleView";
+import SpindleSchematic2D from "../components/SpindleSchematic2D";
+import SpindleSensorMap from "../components/SpindleSensorMap";
 
 const stats = [
   {
@@ -55,9 +57,8 @@ export default function Dashboard() {
             <h2 className="stat-value">{s.value}</h2>
             {s.change && (
               <p
-                className={`stat-change ${
-                  s.change.includes("+") ? "positive" : "negative"
-                }`}
+                className={`stat-change ${s.change.includes("+") ? "positive" : "negative"
+                  }`}
               >
                 {s.change}
               </p>
@@ -97,10 +98,10 @@ export default function Dashboard() {
         <div className="spindle-view">
           {view === "3d" ? (
             <SpindleView />
+          ) : view === "2d" ? (
+            <SpindleSchematic2D />
           ) : (
-            <div className="placeholder">
-              {view === "2d" ? "2D View Placeholder" : "Sensor Map Placeholder"}
-            </div>
+            <SpindleSensorMap />
           )}
         </div>
       </div>

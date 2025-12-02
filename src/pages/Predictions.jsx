@@ -47,8 +47,8 @@ export default function Predictions() {
             <div className="form-group">
               <label>Select Machine</label>
               <select className="form-select">
-                <option>CNC Mill #1</option>
-                <option>CNC Lathe #2</option>
+                <option>SSB1080</option>
+                <option>SSB1081</option>
               </select>
             </div>
 
@@ -153,7 +153,7 @@ export default function Predictions() {
       {showResults && (
         <div id="analysis-results-content">
           <div className="analysis-header">
-            <h3>Analysis Results: CNC Mill #1</h3>
+            <h3>Analysis Results: SSB1080</h3>
             <span>30 Day Forecast</span>
           </div>
 

@@ -117,19 +117,84 @@ td {
   color: #ffc107;
 }
 
-/* Action Icons */
-.actions i {
-  color: #6c757d;
+.status.critical {
+  background-color: #ffe6e6;
+  color: #dc3545;
+}
+
+/* Machine ID Badge */
+.machine-id-badge {
+  background: var(--color-primary);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-family: 'Courier New', monospace;
+}
+
+/* Machine Name Link */
+.machine-name-link {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-weight: 600;
   cursor: pointer;
-  margin-right: 16px;
-  font-size: 16px;
-  transition: color 0.2s;
+  padding: 0;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: var(--transition-base);
 }
 
-.actions i:hover {
-  color: #0d6efd;
+.machine-name-link:hover {
+  text-decoration: underline;
+  color: #1e40af;
 }
 
-.actions i:last-child {
-  margin-right: 0;
+/* Action Icons */
+.actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.action-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  transition: var(--transition-base);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn:hover {
+  background: var(--color-surface);
+}
+
+.action-btn.view-btn:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.action-btn.edit-btn:hover {
+  color: #f59e0b;
+  border-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.action-btn.delete-btn:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.actions i {
+  margin: 0;
 }

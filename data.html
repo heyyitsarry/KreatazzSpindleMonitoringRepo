@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static Data Table (Light Mode)</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        body, html {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f6; /* Light background */
+            color: #333; /* Dark text */
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .dashboard-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff; /* White sidebar */
+            border-right: 1px solid #ddd;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+
+        .sidebar h2 {
+            color: #111;
+            font-size: 1.8rem;
+            margin: 0 0 20px 0;
+        }
+
+        .sidebar .nav-links a {
+            display: block;
+            color: #555;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar .nav-links a:hover {
+            background-color: #f4f4f4;
+        }
+
+        .sidebar .nav-links a.active {
+            background-color: #007bff;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        
+        /* --- Main Content --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .main-content h1 {
+            font-size: 2.5rem;
+            color: #111;
+            margin: 0 0 20px 0;
+            flex-shrink: 0;
+        }
+
+        /* --- Table Styling --- */
+        .table-container {
+            flex-grow: 1;
+            overflow: auto; /* This makes the table scrollable */
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            white-space: nowrap; /* Prevents text from wrapping */
+        }
+
+        thead th {
+            background-color: #f9f9f9;
+            color: #333;
+            font-weight: 600;
+            position: sticky; /* Makes header stay on top */
+            top: 0;
+        }
+
+        tbody tr {
+            transition: background-color 0.2s;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+
+        tbody tr:hover {
+            background-color: #f0f8ff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <div class="sidebar">
+            <h2>Data</h2>
+            <div class="nav-links">
+                <a href="#"><i class="fas fa-home" style="width: 20px; margin-right: 10px;"></i> Home</a>
+                <a href="#" class="active"><i class="fas fa-table" style="width: 20px; margin-right: 10px;"></i> Data Table</a>
+                <a href="#"><i class="fas fa-info-circle" style="width: 20px; margin-right: 10px;"></i> About</a>
+            </div>
+            </div>
+
+        <div class="main-content">
+            <h1>Data Table</h1>
+            
+            <div class="table-container" id="table-container">
+                <table id="data-table">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>timestamp</th>
+                            <th>machine_id</th>
+                            <th>Grinding_spindle_mist_pressure</th>
+                            <th>GRINDING_SPINDLE_TEMP</th>
+                            <th>GRINDING_SPINDLE_CURRENT</th>
+                            <th>SPEED</th>
+                            <th>02_HE4_DE</th>
+                            <th>02_HV_DE</th>
+                            <th>02_HA_DE</th>
+                            <th>01_HV_DE</th>
+                            <th>01_HE4_DE</th>
+                            <th>WORKHEAD_RPM</th>
+                            <th>TOTAL GRINDING TIME</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>19251</td>
+                            <td>2025-10-09 17:22:40</td>
+                            <td>SSB1080</td>
+                            <td>2.585</td>
+                            <td>38.789</td>
+                            <td>23.928</td>
+                            <td>16434.9</td>
+                            <td>1.138</td>
+                            <td>0.552</td>
+                            <td>0.705</td>
+                            <td>0.621</td>
+                            <td>1.084</td>
+                            <td>300</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>19252</td>
+                            <td>2025-10-09 17:22:41</td>
+                            <td>SSB1080</td>
+                            <td>2.590</td>
+                            <td>38.810</td>
+                            <td>24.100</td>
+                            <td>16435.1</td>
+                            <td>1.139</td>
+                            <td>0.553</td>
+                            <td>0.706</td>
+                            <td>0.622</td>
+                            <td>1.085</td>
+                            <td>300</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>19253</td>
+                            <td>2025-10-09 17:22:42</td>
+                            <td>SSB1080</td>
+                            <td>2.587</td>
+                            <td>38.832</td>
+                            <td>23.991</td>
+                            <td>16434.8</td>
+                            <td>1.137</td>
+                            <td>0.551</td>
+                            <td>0.704</td>
+                            <td>0.620</td>
+                            <td>1.083</td>
+                            <td>300</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>19254</td>
+                            <td>2025-10-09 17:22:43</td>
+                            <td>SSB1081</td>
+                            <td>2.105</td>
+                            <td>41.200</td>
+                            <td>27.500</td>
+                            <td>18000.0</td>
+                            <td>1.400</td>
+                            <td>0.610</td>
+                            <td>0.810</td>
+                            <td>0.750</td>
+                            <td>1.320</td>
+                            <td>250</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>19255</td>
+                            <td>2025-10-09 17:22:44</td>
+                            <td>SSB1081</td>
+                            <td>2.102</td>
+                            <td>41.230</td>
+                            <td>27.580</td>
+                            <td>18000.0</td>
+                            <td>1.402</td>
+                            <td>0.612</td>
+                            <td>0.811</td>
+                            <td>0.751</td>
+                            <td>1.321</td>
+                            <td>250</td>
+                            <td>30</td>
+                        </tr>
+                         <tr>
+                            <td>19256</td>
+                            <td>2025-10-09 17:22:45</td>
+                            <td>SSB1081</td>
+                            <td>2.099</td>
+                            <td>41.261</td>
+                            <td>27.650</td>
+                            <td>18000.0</td>
+                            <td>1.403</td>
+                            <td>0.613</td>
+                            <td>0.812</td>
+                            <td>0.752</td>
+                            <td>1.322</td>
+                            <td>250</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>19257</td>
+                            <td>2025-10-09 17:22:46</td>
+                            <td>SSB1080</td>
+                            <td>2.584</td>
+                            <td>38.850</td>
+                            <td>23.931</td>
+                            <td>16434.9</td>
+                            <td>1.138</td>
+                            <td>0.552</td>
+                            <td>0.705</td>
+                            <td>0.621</td>
+                            <td>1.084</td>
+                            <td>300</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>19258</td>
+                            <td>2025-10-09 17:22:47</td>
+                            <td>SSB1080</td>
+                            <td>2.585</td>
+                            <td>38.871</td>
+                            <td>23.945</td>
+                            <td>16435.0</td>
+                            <td>1.138</td>
+                            <td>0.552</td>
+                            <td>0.705</td>
+                            <td>0.621</td>
+                            <td>1.084</td>
+                            <td>300</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>19259</td>
+                            <td>2025-10-09 17:22:48</td>
+                            <td>SSB1080</td>
+                            <td>2.586</td>
+                            <td>38.890</td>
+                            <td>24.005</td>
+                            <td>16435.1</td>
+                            <td>1.139</td>
+                            <td>0.553</td>
+                            <td>0.706</td>
+                            <td>0.622</td>
+                            <td>1.085</td>
+                            <td>300</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>19260</td>
+                            <td>2025-10-09 17:22:49</td>
+                            <td>SSB1081</td>
+                            <td>2.100</td>
+                            <td>41.290</td>
+                            <td>27.700</td>
+                            <td>18000.0</td>
+                            <td>1.405</td>
+                            <td>0.615</td>
+                            <td>0.814</td>
+                            <td>0.754</td>
+                            <td>1.324</td>
+                            <td>250</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>19261</td>
+                            <td>2025-10-09 17:22:50</td>
+                            <td>SSB1081</td>
+                            <td>2.101</td>
+                            <td>41.320</td>
+                            <td>27.750</td>
+                            <td>18000.0</td>
+                            <td>1.406</td>
+                            <td>0.616</td>
+                            <td>0.815</td>
+                            <td>0.755</td>
+                            <td>1.325</td>
+                            <td>250</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>19262</td>
+                            <td>2025-10-09 17:22:51</td>
+                            <td>SSB1082</td>
+                            <td>2.300</td>
+                            <td>39.500</td>
+                            <td>25.100</td>
+                            <td>17000.0</td>
+                            <td>1.200</td>
+                            <td>0.580</td>
+                            <td>0.750</td>
+                            <td>0.680</td>
+                            <td>1.150</td>
+                            <td>280</td>
+                            <td>28</td>
+                        </tr>
+                        <tr>
+                            <td>19263</td>
+                            <td>2025-10-09 17:22:52</td>
+                            <td>SSB1082</td>
+                            <td>2.302</td>
+                            <td>39.520</td>
+                            <td>25.120</td>
+                            <td>17000.0</td>
+                            <td>1.201</td>
+                            <td>0.581</td>
+                            <td>0.751</td>
+                            <td>0.681</td>
+                            <td>1.151</td>
+                            <td>280</td>
+                            <td>28</td>
+                        </tr>
+                        <tr>
+                            <td>19264</td>
+                            <td>2025-10-09 17:22:53</td>
+                            <td>SSB1080</td>
+                            <td>2.585</td>
+                            <td>38.910</td>
+                            <td>23.980</td>
+                            <td>16434.9</td>
+                            <td>1.138</td>
+                            <td>0.552</td>
+                            <td>0.705</td>
+                            <td>0.621</td>
+                            <td>1.084</td>
+                            <td>300</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>19265</td>
+                            <td>2025-10-09 17:22:54</td>
+                            <td>SSB1080</td>
+                            <td>2.584</td>
+                            <td>38.930</td>
+                            <td>23.950</td>
+                            <td>16434.8</td>
+                            <td>1.137</td>
+                            <td>0.551</td>
+                            <td>0.704</td>
+                            <td>0.620</td>
+                            <td>1.083</td>
+                            <td>300</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>19266</td>
+                            <td>2025-10-09 17:22:55</td>
+                            <td>SSB1081</td>
+                            <td>2.098</td>
+                            <td>41.350</td>
+                            <td>27.800</td>
+                            <td>18000.0</td>
+                            <td>1.408</td>
+                            <td>0.618</td>
+                            <td>0.817</td>
+                            <td>0.757</td>
+                            <td>1.327</td>
+                            <td>250</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>19267</td>
+                            <td>2025-10-09 17:22:56</td>
+                            <td>SSB1081</td>
+                            <td>2.097</td>
+                            <td>41.380</td>
+                            <td>27.830</td>
+                            <td>18000.0</td>
+                            <td>1.409</td>
+                            <td>0.619</td>
+                            <td>0.818</td>
+                            <td>0.758</td>
+                            <td>1.328</td>
+                            <td>250</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>19268</td>
+                            <td>2025-10-09 17:22:57</td>
+                            <td>SSB1082</td>
+                            <td>2.305</td>
+                            <td>39.550</td>
+                            <td>25.150</td>
+                            <td>17000.0</td>
+                            <td>1.203</td>
+                            <td>0.583</td>
+                            <td>0.753</td>
+                            <td>0.683</td>
+                            <td>1.153</td>
+                            <td>280</td>
+                            <td>28</td>
+                        </tr>
+                        <tr>
+                            <td>19269</td>
+                            <td>2025-10-09 17:22:58</td>
+                            <td>SSB1082</td>
+                            <td>2.304</td>
+                            <td>39.570</td>
+                            <td>25.140</td>
+                            <td>17000.0</td>
+                            <td>1.202</td>
+                            <td>0.582</td>
+                            <td>0.752</td>
+                            <td>0.682</td>
+                            <td>1.152</td>
+                            <td>280</td>
+                            <td>28</td>
+                        </tr>
+                        <tr>
+                            <td>19270</td>
+                            <td>2025-10-09 17:22:59</td>
+                            <td>SSB1080</td>
+                            <td>2.585</td>
+                            <td>38.950</td>
+                            <td>23.960</td>
+                            <td>16434.9</td>
+                            <td>1.138</td>
+                            <td>0.552</td>
+                            <td>0.705</td>
+                            <td>0.621</td>
+                            <td>1.084</td>
+                            <td>300</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>19271</td>
+                            <td>2025-10-09 17:23:00</td>
+                            <td>SSB1080</td>
+                            <td>2.586</td>
+                            <td>38.970</td>
+                            <td>23.975</td>
+                            <td>16435.0</td>
+                            <td>1.138</td>
+                            <td>0.552</td>
+                            <td>0.705</td>
+                            <td>0.621</td>
+                            <td>1.084</td>
+                            <td>300</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>19272</td>
+                            <td>2025-10-09 17:23:01</td>
+                            <td>SSB1081</td>
+                            <td>2.095</td>
+                            <td>41.410</td>
+                            <td>27.880</td>
+                            <td>18000.0</td>
+                            <td>1.410</td>
+                            <td>0.620</td>
+                            <td>0.820</td>
+                            <td>0.760</td>
+                            <td>1.330</td>
+                            <td>250</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>19273</td>
+                            <td>2025-10-09 17:23:02</td>
+                            <td>SSB1081</td>
+                            <td>2.094</td>
+                            <td>41.440</td>
+                            <td>27.910</td>
+                            <td>18000.0</td>
+                            <td>1.411</td>
+                            <td>0.621</td>
+                            <td>0.821</td>
+                            <td>0.761</td>
+                            <td>1.331</td>
+                            <td>250</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>19274</td>
+                            <td>2025-10-09 17:23:03</td>
+                            <td>SSB1082</td>
+                            <td>2.307</td>
+                            <td>39.600</td>
+                            <td>25.180</td>
+                            <td>17000.0</td>
+                            <td>1.205</td>
+                            <td>0.585</td>
+                            <td>0.755</td>
+                            <td>0.685</td>
+                            <td>1.155</td>
+                            <td>280</td>
+                            <td>28</td>
+                        </tr>
+                        <tr>
+                            <td>19275</td>
+                            <td>2025-10-09 17:23:04</td>
+                            <td>SSB1082</td>
+                            <td>2.306</td>
+                            <td>39.620</td>
+                            <td>25.170</td>
+                            <td>17000.0</td>
+                            <td>1.204</td>
+                            <td>0.584</td>
+                            <td>0.754</td>
+                            <td>0.684</td>
+                            <td>1.154</td>
+                            <td>280</td>
+                            <td>28</td>
+                        </tr>
+                        <tr>
+                            <td>19276</td>
+                            <td>2025-10-09 17:23:05</td>
+                            <td>SSB1080</td>
+                            <td>2.585</td>
+                            <td>38.990</td>
+                            <td>23.990</td>
+                            <td>16434.9</td>
+                            <td>1.138</td>
+                            <td>0.552</td>
+                            <td>0.705</td>
+                            <td>0.621</td>
+                            <td>1.084</td>
+                            <td>300</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>19277</td>
+                            <td>2025-10-09 17:23:06</td>
+                            <td>SSB1080</td>
+                            <td>2.586</td>
+                            <td>39.010</td>
+                            <td>24.010</td>
+                            <td>16435.0</td>
+                            <td>1.139</td>
+                            <td>0.553</td>
+                            <td>0.706</td>
+                            <td>0.622</td>
+                            <td>1.085</td>
+                            <td>300</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>19278</td>
+                            <td>2025-10-09 17:23:07</td>
+                            <td>SSB1081</td>
+                            <td>2.092</td>
+                            <td>41.470</td>
+                            <td>27.950</td>
+                            <td>18000.0</td>
+                            <td>1.413</td>
+                            <td>0.623</td>
+                            <td>0.823</td>
+                            <td>0.763</td>
+                            <td>1.333</td>
+                            <td>250</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>19279</td>
+                            <td>2025-10-09 17:23:08</td>
+                            <td>SSB1081</td>
+                            <td>2.091</td>
+                            <td>41.500</td>
+                            <td>27.990</td>
+                            <td>18000.0</td>
+                            <td>1.414</td>
+                            <td>0.624</td>
+                            <td>0.824</td>
+                            <td>0.764</td>
+                            <td>1.334</td>
+                            <td>250</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>19280</td>
+                            <td>2025-10-09 17:23:09</td>
+                            <td>SSB1082</td>
+                            <td>2.309</td>
+                            <td>39.650</td>
+                            <td>25.200</td>
+                            <td>17000.0</td>
+                            <td>1.207</td>
+                            <td>0.587</td>
+                            <td>0.757</td>
+                            <td>0.687</td>
+                            <td>1.157</td>
+                            <td>280</td>
+                            <td>28</td>
+                        </tr>
+                        <tr>
+                            <td>19281</td>
+                            <td>2025-10-09 17:23:10</td>
+                            <td>SSB1082</td>
+                            <td>2.308</td>
+                            <td>39.670</td>
+                            <td>25.190</td>
+                             <td>17000.0</td>
+                            <td>1.206</td>
+                            <td>0.586</td>
+                            <td>0.756</td>
+                            <td>0.686</td>
+                            <td>1.156</td>
+                            <td>280</td>
+                            <td>28</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    </body>
+</html>

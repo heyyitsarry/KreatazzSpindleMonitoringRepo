@@ -16,23 +16,19 @@ export default function SpindleModel() {
   }, [nodes]);
 
   useFrame(() => {
-    // 🌐 Slow rotation for the whole spindle
-    if (group.current) {
-      group.current.rotation.y += 0.003; // outer model slow spin
-      group.current.rotation.z = Math.PI / 2; // keep horizontal
-    }
-
-    // ⚙️ Fast rotation for shaft — try each axis to see which matches your model
+    // ⚙️ Fast rotation for shaft only (axial rotation)
     if (shaftRef.current) {
-      // ✅ Try these one at a time:
-      // shaftRef.current.rotation.x += 0.5; // if aligned on X-axis
-      // shaftRef.current.rotation.y += 0.5; // if aligned on Y-axis
-      shaftRef.current.rotation.y += 0.5; // if aligned on Z-axis
+      shaftRef.current.rotation.y += 0.5; // shaft spinning
     }
   });
 
   return (
-    <group ref={group} position={[0, 0, 0]} scale={1.2}>
+    <group 
+      ref={group} 
+      position={[0, 0, 0]} 
+      scale={1.5}
+      rotation={[0, 0, Math.PI / 2]}  // Locked horizontal orientation
+    >
       <primitive object={scene} />
     </group>
   );
